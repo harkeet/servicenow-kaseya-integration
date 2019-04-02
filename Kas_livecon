@@ -1,0 +1,48 @@
+/*
+{ 
+   "homePageUrl": "https://my-vsa-host/liveconnect/",
+   "payload": {
+     "auth": {
+       "Token": "98765432"
+     },
+      "agentId": "123456789012345",
+     "navId": "files" 
+    }
+}
+*/
+
+var gr = new GlideRecord('oauth_credential');
+gr.addQuery('type', 'access_token'); 
+gr.query(); 
+gr.next(); 
+
+var password = gr.token_received
+var token1 = new GlideEncrypter().decrypt(password);
+gs.info('token : ' + token1);
+
+
+
+var authtoken = {};
+var payload = {};
+var livecon = {};
+
+authtoken.Token = token1.toString();
+var parser = new global.JSON();
+var str = parser.encode(authtoken);
+gs.info('The object: '  + str);
+
+payload.auth = authtoken;
+payload.agentId = "725430311913921";
+payload.navId = "remotecontrol";
+var payload_str = parser.encode(payload);
+gs.info('The payload_str: '  + payload_str);
+
+livecon.homePageUrl = "https://manage.nspi.com/liveconnect/";
+livecon.payload = payload;
+//livecon.agentId = "725430311913921";
+//livecon.navId = "remotecontrol";
+var livecon_str = parser.encode(livecon);
+gs.info('The livecon_str: '  + livecon_str);
+
+var base64string = GlideStringUtil.base64Encode(livecon_str);
+gs.info('Base64 format : ' + 'kaseyaliveconnect:///'+base64string);

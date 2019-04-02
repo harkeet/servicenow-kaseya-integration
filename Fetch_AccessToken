@@ -1,0 +1,9 @@
+//Fetch Access Token from OAuth Table and decrypt the token value
+var gr = new GlideRecord('oauth_credential');
+gr.addQuery('type', 'access_token'); 
+gr.query(); 
+gr.next(); 
+
+var password = gr.token_received
+var token = new GlideEncrypter().decrypt(password);
+gs.info('token : ' + token);

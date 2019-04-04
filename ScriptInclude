@@ -8,7 +8,9 @@ KaseyaLiveConnect.prototype = Object.extendsObject(AbstractAjaxProcessor, {
 		
 		var password = gr.token_received;
 		var token1 = new GlideEncrypter().decrypt(password);
+		var token2 = gr.token;
 		gs.info('token : ' + token1);
+		gs.info('token2 : ' + token2);
 		
 		
 		
@@ -16,28 +18,31 @@ KaseyaLiveConnect.prototype = Object.extendsObject(AbstractAjaxProcessor, {
 			var payload = {};
 				var livecon = {};
 					
-					authtoken.Token = token1.toString();
+					authtoken.Token = token2.toString();
 					var parser = new global.JSON();
 					var str = parser.encode(authtoken);
 					gs.info('The object: '  + str);
 					
 					payload.auth = authtoken;
-					payload.agentId = "725430311913921";
+					payload.agentId = guid;
+					//payload.agentId = "725430311913921";
 					payload.navId = "remotecontrol";
 					var payload_str = parser.encode(payload);
 					gs.info('The payload_str: '  + payload_str);
 					
 					livecon.homePageUrl = "https://manage.nspi.com/liveconnect/";
 					livecon.payload = payload;
-					//livecon.agentId = "725430311913921";
-					//livecon.navId = "remotecontrol";
 					var livecon_str = parser.encode(livecon);
 					gs.info('The livecon_str: '  + livecon_str);
 					
 					var base64string = GlideStringUtil.base64Encode(livecon_str);
+					var liveconurl = 'kaseyaliveconnect:///'+base64string;
 					gs.info('Base64 format : ' + 'kaseyaliveconnect:///'+base64string);
-		
-		
+					
+					return liveconurl;
+					
 				}
-				type: 'KaseyaLiveConnect'
+				
+				//type : 'KaseyaLiveConnect'
+				
 			});

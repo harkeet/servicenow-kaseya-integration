@@ -1,15 +1,19 @@
+gs.info('kaseya script called');
 var KaseyaLiveConnect = Class.create();
 KaseyaLiveConnect.prototype = Object.extendsObject(AbstractAjaxProcessor, {
-	liveconurl: function(guid){
+	liveconurl: function(){
+		gs.info('kaseya function called');
 		var gr = new GlideRecord('oauth_credential');
 		gr.addQuery('type', 'access_token');
 		gr.query();
 		gr.next();
 		
-		var password = gr.token_received;
-		var token1 = new GlideEncrypter().decrypt(password);
+		var aguid = this.getParameter('sysparm_guid');
+		
+		//var password = gr.token_received;
+		//var token1 = new GlideEncrypter().decrypt(password);
 		var token2 = gr.token;
-		gs.info('token : ' + token1);
+		//gs.info('token : ' + token1);
 		gs.info('token2 : ' + token2);
 		
 		
@@ -24,7 +28,7 @@ KaseyaLiveConnect.prototype = Object.extendsObject(AbstractAjaxProcessor, {
 					gs.info('The object: '  + str);
 					
 					payload.auth = authtoken;
-					payload.agentId = guid;
+					payload.agentId = aguid;
 					//payload.agentId = "725430311913921";
 					payload.navId = "remotecontrol";
 					var payload_str = parser.encode(payload);
@@ -39,10 +43,12 @@ KaseyaLiveConnect.prototype = Object.extendsObject(AbstractAjaxProcessor, {
 					var liveconurl = 'kaseyaliveconnect:///'+base64string;
 					gs.info('Base64 format : ' + 'kaseyaliveconnect:///'+base64string);
 					
-					return liveconurl;
+					//return liveconurl;
+					//this.getRootElement().setAttribute('url', liveconurl);
+					this.getRootElement().setAttribute('liveconurl', liveconurl);
 					
-				}
+				},
 				
-				//type : 'KaseyaLiveConnect'
+				type : 'KaseyaLiveConnect'
 				
 			});

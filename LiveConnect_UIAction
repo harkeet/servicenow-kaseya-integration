@@ -1,0 +1,25 @@
+function liveConnect2(){
+	console.log('UI Action liveConnect Called domain changed');
+	
+	var aguid = g_form.getValue('u_agent_guid');
+	console.log(aguid);
+	var ga = new GlideAjax('KaseyaLiveConnect');
+	alert("1");
+	ga.addParam('sysparm_name', 'liveconurl');
+	ga.addParam('sysparm_guid', aguid);
+	alert("2");
+	//var returnurl = ga.getAnswer();
+	
+	//var url = 'kaseyaliveconnect:///' + base64string;
+	//var url = returnurl;
+	ga.getXML(Callback);
+	alert("3");
+	//console.log('return value', returnurl);
+	//window.open(url,'_blank');
+}
+function Callback(response){
+	var answer = response.responseXML.documentElement.getAttribute('liveconurl');
+	alert(answer);
+	//window.open(answer);
+	g_navigation.openPopup(answer);
+}

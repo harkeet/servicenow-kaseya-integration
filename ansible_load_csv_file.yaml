@@ -1,5 +1,5 @@
 ---
-- name: Create ticket with notes
+- name: Update SNOW with ADSP Data
   hosts: localhost
   gather_facts: no
   connection: local
@@ -8,18 +8,17 @@
   - name: include vars
     include_vars: change_request_vars.yml
 
-  - name: Create a change request
+  - name: Parse ADSP CSV Content to ServiceNow Table
     snow_record:
       state: present
-      table: change_request
+      table: u_adsp_csv
       username: "{{ sn_username }}"
       password: "{{ sn_password }}"
       instance: "{{ sn_instance }}"
       data:
-        severity: "{{ sn_severity }}"
-        priority: "{{ sn_priority }}"
-        short_description: "This is a test opened by Ansible"
-    register: new_incident
+        u_client_mac: "{{ sn_severity }}"
+        u_vendor: "{{ sn_priority }}"
+    register: new_adsp
 
   - debug: 
-      var: new_incident.record
+      var: new_adsp.record
